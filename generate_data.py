@@ -1,14 +1,30 @@
 import os
+import zipfile
 import numpy as np
 import pandas as pd
 
-FER_CSV_PATH = os.path.join('datasets', 'fer2013', 'fer2013.csv')
+DATASETS_DIR = os.path.join(os.path.dirname(__file__), 'datasets')
+UNPACKED_DIR = os.path.join(DATASETS_DIR, 'unpacked')
+FER_ARCHIVE_PATH = os.path.join(DATASETS_DIR, 'fer2013.zip')
+
+FER_CSV_PATH = os.path.join(UNPACKED_DIR, 'fer2013', 'fer2013.csv')
 FER_WIDTH = 48
 FER_HEIGHT = 48
 
 PREPROCESSED_DATA_DIR = 'data' 
 DATA_X = 'data_x'
 DATA_Y = 'data_y'
+
+
+def unpack(archive_path):
+    archive_name = os.path.splitext(os.path.basename(archive_path))[0]
+    unpack_path = os.path.join(UNPACKED_DIR, archive_name)
+
+    if os.path.exists(unpack_path):
+        return
+
+    with zipfile.ZipFile(archive_path, 'r') as archive:
+        archive.extractall(unpack_path)
 
 
 def generate_data():
@@ -35,11 +51,10 @@ def generate_data():
     return X, Y
 
 
-# It is a standard way to pre-process images by scaling them between -1 to 1. 
-# Images is scaled to [0,1] by dividing it by 255. 
-# Further, subtraction by 0.5 and multiplication by 2 changes the range to [-1,1]. 
-# [-1,1] has been found a better range for neural network models in computer vision problems.
 def preprocess_input(X, expand_range=True):
+    """
+    Preprocess images by scaling them between -1 to 1.
+    """
     X = X.astype('float32')
     X = X / 255.0
     if expand_range:
@@ -49,6 +64,7 @@ def preprocess_input(X, expand_range=True):
 
 
 if __name__ == "__main__":
+    unpack(FER_ARCHIVE_PATH)
     X, Y = generate_data()
     X = preprocess_input(X)
 
