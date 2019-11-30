@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 
-FER_CSV_PATH = 'datasets/fer2013/fer2013.csv'
+FER_CSV_PATH = os.path.join('datasets', 'fer2013', 'fer2013.csv')
 FER_WIDTH = 48
 FER_HEIGHT = 48
 
@@ -52,5 +52,5 @@ if __name__ == "__main__":
     X, Y = generate_data()
     X = preprocess_input(X)
 
-    np.save(f'{PREPROCESSED_DATA_DIR}/{DATA_X}', X)
-    np.save(f'{PREPROCESSED_DATA_DIR}/{DATA_Y}', Y)
+    np.save(os.path.join(PREPROCESSED_DATA_DIR, DATA_X), X)
+    np.save(os.path.join(PREPROCESSED_DATA_DIR, DATA_Y), Y)

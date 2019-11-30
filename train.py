@@ -58,7 +58,7 @@ def train(X, Y):
           shuffle=True)
 
     model.save_weights(f'{MODEL_WEIGHTS}')
-    print('Model is saved to {}.npy'.format(os.path.abspath(MODEL_WEIGHTS)))
+    print('Model is saved to {}'.format(os.path.abspath(MODEL_WEIGHTS)))
 
 
 if __name__ == '__main__':
