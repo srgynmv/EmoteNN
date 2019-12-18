@@ -2,23 +2,19 @@ import os
 import zipfile
 import numpy as np
 import pandas as pd
+import constants
+from sklearn.model_selection import train_test_split
 
-DATASETS_DIR = os.path.join(os.path.dirname(__file__), 'datasets')
-UNPACKED_DIR = os.path.join(DATASETS_DIR, 'unpacked')
-FER_ARCHIVE_PATH = os.path.join(DATASETS_DIR, 'fer2013.zip')
 
-FER_CSV_PATH = os.path.join(UNPACKED_DIR, 'fer2013', 'fer2013.csv')
+FER_ARCHIVE_PATH = os.path.join(constants.DATASETS_DIR, 'fer2013.zip')
+FER_CSV_PATH = os.path.join(constants.UNPACKED_DIR, 'fer2013', 'fer2013.csv')
 FER_WIDTH = 48
 FER_HEIGHT = 48
-
-PREPROCESSED_DATA_DIR = 'data' 
-DATA_X = 'data_x'
-DATA_Y = 'data_y'
 
 
 def unpack(archive_path):
     archive_name = os.path.splitext(os.path.basename(archive_path))[0]
-    unpack_path = os.path.join(UNPACKED_DIR, archive_name)
+    unpack_path = os.path.join(constants.UNPACKED_DIR, archive_name)
 
     if os.path.exists(unpack_path):
         return
@@ -42,9 +38,6 @@ def generate_data():
 
     Y = pd.get_dummies(data['emotion']).to_numpy()
 
-    if not os.path.isdir(PREPROCESSED_DATA_DIR):
-        os.mkdir(PREPROCESSED_DATA_DIR)
-
     print(f'Loaded {len(X)} images')
     print(f'Image shape: {X[0].shape}')
 
@@ -60,13 +53,33 @@ def preprocess_input(X, expand_range=True):
     if expand_range:
         X -= 0.5
         X *= 2.0
+
+    X -= np.mean(X, axis=0)
+    X /= np.std(X, axis=0)
+
     return X
 
 
-if __name__ == "__main__":
+def save(X, Y):
+    if not os.path.isdir(constants.PREPROCESSED_DATA_DIR):
+        os.mkdir(constants.PREPROCESSED_DATA_DIR)
+
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=7)
+    
+    np.save(constants.TRAIN_X, X_train)
+    np.save(constants.TRAIN_Y, Y_train)
+    np.save(constants.TEST_X, X_test)
+    np.save(constants.TEST_Y, Y_test)
+
+    print(f'{len(X_train)} train images, {len(X_test)} test images')
+
+
+def main():
     unpack(FER_ARCHIVE_PATH)
     X, Y = generate_data()
     X = preprocess_input(X)
+    save(X, Y)
 
-    np.save(os.path.join(PREPROCESSED_DATA_DIR, DATA_X), X)
-    np.save(os.path.join(PREPROCESSED_DATA_DIR, DATA_Y), Y)
+
+if __name__ == "__main__":
+    main()
