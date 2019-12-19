@@ -1,3 +1,4 @@
+import sys
 import constants
 import numpy as np
 from keras.models import load_model
@@ -10,7 +11,11 @@ def load_test_data():
 
 
 def main():
-    model = load_model(constants.MODEL_PATH)
+    if len(sys.argv) < 1:
+        print('Please pass the path to a model!')
+        return
+
+    model = load_model(sys.argv[1])
     model.summary()
     X_test, Y_test = load_test_data()
     score = model.evaluate(X_test, Y_test)
