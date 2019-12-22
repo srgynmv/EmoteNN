@@ -29,24 +29,17 @@ def load(model_path):
     return model, X, Y
 
 
-def plot_random_images(X, count=10):
-    import matplotlib.pyplot as plt
-    for image in range(10):
-        plt.figure(image)
-        plt.imshow(X[image].reshape((constants.WIDTH, constants.HEIGHT)), interpolation='none', cmap='gray')
-    plt.show()
-
-
-def get_callbacks():
+def get_callbacks(model_name):
     if not os.path.isdir(constants.CHECKPOINTS_DIR):
         os.mkdir(constants.CHECKPOINTS_DIR)
+
     cb_list = []
-    cb_list.append(callbacks.ModelCheckpoint(os.path.join(constants.CHECKPOINTS_DIR, 'model-{epoch:02d}-{val_loss:.2f}.h5'), period=5))
-    cb_list.append(callbacks.EarlyStopping(patience=5))
+    cb_list.append(callbacks.ModelCheckpoint(os.path.join(constants.CHECKPOINTS_DIR, model_name + '-{epoch:02d}-{val_loss:.2f}.h5'), period=5))
+    cb_list.append(callbacks.EarlyStopping(monitor='val_accuracy', patience=25))
     return cb_list
 
 
-def train(model, X, Y):
+def train(model, X, Y, callbacks):
     X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.2, random_state=17)
 
     model.compile(loss=categorical_crossentropy,
@@ -59,7 +52,7 @@ def train(model, X, Y):
           verbose=1,
           validation_data=(np.array(X_valid), np.array(Y_valid)),
           shuffle=True,
-          callbacks=get_callbacks())
+          callbacks=callbacks)
 
     return history
 
@@ -85,8 +78,9 @@ def main():
 
     model_path = sys.argv[1]
     model, X, Y = load(model_path)
-    history = train(model, X, Y)
+
     result_filename = os.path.basename(model_path).split('.')[0]
+    history = train(model, X, Y, get_callbacks(result_filename))
     save(result_filename, model, history)
 
 
