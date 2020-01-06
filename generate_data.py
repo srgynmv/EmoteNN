@@ -54,8 +54,10 @@ def preprocess_input(X, expand_range=True):
         X -= 0.5
         X *= 2.0
 
-    X -= np.mean(X, axis=0)
-    X /= np.std(X, axis=0)
+    # No need to normalize a single image
+    if np.size(X, 0) > 1:
+        X -= np.mean(X, axis=0)
+        X /= np.std(X, axis=0)
 
     return X
 

@@ -42,7 +42,6 @@ def plot_model_history():
 
 
 def plot_random_images(X, Y, count=10):
-    import matplotlib.pyplot as plt
     fig, axes = plt.subplots(1, count)
     for ax in axes:
         image_idx = np.random.randint(0, len(X))
@@ -50,6 +49,12 @@ def plot_random_images(X, Y, count=10):
         ax.set_title(get_class_name(Y[image_idx]))
         ax.axis('off')
     plt.show()
+
+
+def plot_dataset_images(count=5):
+    test_x = np.load(constants.TEST_X)
+    test_y = np.load(constants.TEST_Y)
+    plot_random_images(test_x, test_y, count)
 
 
 def draw_data_metrics():
@@ -114,3 +119,4 @@ if __name__ == "__main__":
     #plot_model_history()
     #plot_confusion_matrix()
     #plot_model_graph()
+    #plot_dataset_images()

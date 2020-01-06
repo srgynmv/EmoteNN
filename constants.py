@@ -17,4 +17,5 @@ CHECKPOINTS_DIR = os.path.join(PREPROCESSED_DATA_DIR, 'checkpoints')
 # data section
 WIDTH = 48
 HEIGHT = 48
+SIZE = (WIDTH, HEIGHT)
 CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
