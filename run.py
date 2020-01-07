@@ -25,6 +25,9 @@ LABEL_PADDING = 10
 
 def download(src_url, dst_path):
     r = requests.get(src_url)
+    directory = os.path.dirname(dst_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     with open(dst_path, 'wb') as dst_file:
         dst_file.write(r.content)
 
@@ -80,7 +83,7 @@ def mainloop(source_path=None, model_path=None, draw_probabilities=False):
     if not os.path.exists(HAARCASCADE_PATH):
         download(HAARCASCADE_URL, HAARCASCADE_PATH)
     face_cascade = cv2.CascadeClassifier(HAARCASCADE_PATH)
-
+    
     # Use video file path or video camera number as a source
     capture_source = source_path or 0
     capture = cv2.VideoCapture(capture_source)

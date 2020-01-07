@@ -3,3 +3,4 @@ __pycache__
 data
 datasets/unpacked
 *.pyc
+*.venv
