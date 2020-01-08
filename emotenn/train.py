@@ -5,7 +5,7 @@ import pandas as pd
 import pickle
 import importlib.util
 
-import constants
+from . import constants
 from keras.losses import categorical_crossentropy
 from keras.optimizers import Adam
 from keras.callbacks import callbacks

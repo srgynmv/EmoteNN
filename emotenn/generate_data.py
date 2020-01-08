@@ -2,7 +2,7 @@ import os
 import zipfile
 import numpy as np
 import pandas as pd
-import constants
+from . import constants
 from sklearn.model_selection import train_test_split
 
 

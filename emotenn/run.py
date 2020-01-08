@@ -3,11 +3,11 @@ import cv2
 import sys
 import argparse
 import requests
-import constants
+from . import constants
 
 import numpy as np
 from keras.models import load_model
-from generate_data import preprocess_input
+from .generate_data import preprocess_input
 
 
 HAARCASCADE_PATH = os.path.join(constants.PREPROCESSED_DATA_DIR, 'haarcascade_frontalface_default.xml')

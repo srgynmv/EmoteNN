@@ -1,6 +1,6 @@
 import sys
-import constants
 import numpy as np
+from . import constants
 from keras.models import load_model
 
 

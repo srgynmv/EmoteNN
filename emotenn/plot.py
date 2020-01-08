@@ -1,8 +1,8 @@
 import os
 import pickle
-import constants
 import numpy as np
 import seaborn as sns
+from . import constants
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 from keras.models import load_model
