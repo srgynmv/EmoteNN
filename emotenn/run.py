@@ -54,6 +54,8 @@ class EmoteClassifier:
             if not ok:
                 break
 
+            timestamp = capture.get(cv2.CAP_PROP_POS_MSEC)
+
             # Find faces using the cascade
             gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = self.face_cascade.detectMultiScale(gray_img, 1.1, 5)
@@ -64,7 +66,7 @@ class EmoteClassifier:
                 emotion_classes.append(self.classify(face))
 
             processed_faces = zip(faces, emotion_classes)
-            stopped = on_frame_callback(img, processed_faces)
+            stopped = on_frame_callback(img, processed_faces, timestamp)
 
             if stopped:
                 break
@@ -91,7 +93,7 @@ class WindowOutput:
     def close(self):
         cv2.destroyAllWindows()
 
-    def on_frame(self, img, faces):
+    def on_frame(self, img, faces, timestamp):
         # Draw face box and labels
         for (x, y, w, h), emotion_classes in faces:
             cv2.rectangle(img, (x, y), (x+w, y+h), self.DRAW_COLOR, self.BORDER_SIZE)
