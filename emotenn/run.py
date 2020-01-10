@@ -6,7 +6,7 @@ import requests
 from . import constants
 
 import numpy as np
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from .generate_data import preprocess_input
 
 

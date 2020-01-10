@@ -6,9 +6,9 @@ import pickle
 import importlib.util
 
 from . import constants
-from keras.losses import categorical_crossentropy
-from keras.optimizers import Adam
-from keras.callbacks import callbacks
+from tensorflow.keras.losses import categorical_crossentropy
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import callbacks
 from sklearn.model_selection import train_test_split
 
 

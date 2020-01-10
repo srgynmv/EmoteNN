@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 from . import constants
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 
 def load_test_data():

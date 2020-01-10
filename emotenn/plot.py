@@ -5,8 +5,8 @@ import seaborn as sns
 from . import constants
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
-from keras.models import load_model
-from keras.utils import plot_model
+from tensorflow.keras.models import load_model
+from tensorflow.keras.utils import plot_model
 
 
 HISTORY_PATH = os.path.join(constants.TRAINED_MODELS_DIR, 'model_history.pkl')
