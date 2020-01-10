@@ -10,17 +10,13 @@ def load_test_data():
     return X, Y
 
 
-def main():
-    if len(sys.argv) < 1:
-        print('Please pass the path to a model!')
-        return
+def fill_arguments(parser):
+    parser.add_argument('model', help='path to a model')
 
-    model = load_model(sys.argv[1])
+
+def main(args):
+    model = load_model(args.model)
     model.summary()
     X_test, Y_test = load_test_data()
     score = model.evaluate(X_test, Y_test)
     print("{}: {:.2f}%".format(model.metrics_names[1], score[1] * 100))
-
-
-if __name__ == "__main__":
-    main()

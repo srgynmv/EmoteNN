@@ -105,12 +105,12 @@ class WindowOutput:
                 label = constants.CLASS_NAMES[class_idx]
                 self.draw_label(img, x, y, w, h, label)
 
-            # Display a final image
-            cv2.imshow(self.WINDOW_NAME, img)
-            cv2.waitKey(1)
+        # Display a final image
+        cv2.imshow(self.WINDOW_NAME, img)
+        cv2.waitKey(1)
 
-            # Stop the video processing when the window is closed
-            return cv2.getWindowProperty(self.WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1
+        # Stop the video processing when the window is closed
+        return cv2.getWindowProperty(self.WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1
 
     @classmethod
     def draw_labels(cls, img, x, y, w, h, labels):
@@ -155,20 +155,13 @@ class WindowOutput:
         self.close()
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
+def fill_arguments(parser):
     parser.add_argument('source', nargs='?', default=None, help='path to a source for the emotion recognition')
     parser.add_argument('--model', default=None, help='path to a trained model')
     parser.add_argument('--probs', action='store_true', help='display probabilities of all classes instead of one class')
-    return parser.parse_args()
 
 
-def main():
-    args = parse_args()
+def main(args):
     classifier = EmoteClassifier(model_path=args.model)
     with WindowOutput(draw_probabilites=args.probs) as output:
         classifier.process_source(args.source, output.on_frame)
-
-
-if __name__ == '__main__':
-    main()

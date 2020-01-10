@@ -71,18 +71,13 @@ def save(result_filename, model, history):
     print('Train history is saved to {}'.format(history_path))
 
 
-def main():
-    if len(sys.argv) < 1:
-        print('Please pass the path to a model!')
-        return
+def fill_arguments(parser):
+    parser.add_argument('model', help='path to a model')
 
-    model_path = sys.argv[1]
-    model, X, Y = load(model_path)
+
+def main(args):
+    model, X, Y = load(args.model)
 
     result_filename = os.path.basename(model_path).split('.')[0]
     history = train(model, X, Y, get_callbacks(result_filename))
     save(result_filename, model, history)
-
-
-if __name__ == '__main__':
-    main()

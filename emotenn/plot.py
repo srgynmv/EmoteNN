@@ -113,7 +113,7 @@ def plot_model_graph():
     plot_model(model, show_shapes=True, show_layer_names=True)
 
 
-if __name__ == "__main__":
+def main(args):
     pass
     #draw_data_metrics()
     #plot_model_history()

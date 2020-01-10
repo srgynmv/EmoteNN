@@ -76,12 +76,8 @@ def save(X, Y):
     print(f'{len(X_train)} train images, {len(X_test)} test images')
 
 
-def main():
+def main(args):
     unpack(FER_ARCHIVE_PATH)
     X, Y = generate_data()
     X = preprocess_input(X)
     save(X, Y)
-
-
-if __name__ == "__main__":
-    main()
