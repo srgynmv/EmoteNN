@@ -8,7 +8,7 @@ import importlib.util
 from . import constants
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import callbacks
+from tensorflow.keras import callbacks
 from sklearn.model_selection import train_test_split
 
 
