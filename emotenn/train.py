@@ -78,6 +78,6 @@ def fill_arguments(parser):
 def main(args):
     model, X, Y = load(args.model)
 
-    result_filename = os.path.basename(model_path).split('.')[0]
+    result_filename = os.path.basename(args.model).split('.')[0]
     history = train(model, X, Y, get_callbacks(result_filename))
     save(result_filename, model, history)
