@@ -1,4 +1,5 @@
 import os
+from collections import namedtuple
 
 # paths section
 PROJECT_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -19,3 +20,12 @@ WIDTH = 48
 HEIGHT = 48
 SIZE = (WIDTH, HEIGHT)
 CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+
+# dataset urls
+Dataset = namedtuple('Dataset', ['x_gdrive_id', 'x_name', 'y_gdrive_id', 'y_name'])
+FER2013 = Dataset(
+    x_gdrive_id='1ixw7odMh7jTOHgTQBRISd_WUdsvOU0P2',
+    x_name='fer2013_x.npy',
+    y_gdrive_id='1VjpSF_fzjWQ78yiiNwbzVYuhLrM3S9rQ',
+    y_name='fer2013_y.npy'
+)
