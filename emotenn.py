@@ -1,8 +1,8 @@
 import argparse
-from emotenn import generate_data, plot, run, test, train
+from emotenn import generate_data, run
 
 
-SUBMODULES = [generate_data, plot, run, test, train]
+SUBMODULES = [generate_data, run]
 
 
 def parse_args():
