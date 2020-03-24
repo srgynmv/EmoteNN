@@ -4,11 +4,15 @@ import requests
 from . import constants
 
 
-def download(src_url, dst_path):
-    r = requests.get(src_url)
-    directory = os.path.dirname(dst_path)
+def create_dirs_for_path(path):
+    directory = os.path.dirname(path)
     if not os.path.exists(directory):
         os.makedirs(directory)
+
+
+def download(src_url, dst_path):
+    r = requests.get(src_url)
+    create_dirs_for_path(dst_path)
     with open(dst_path, 'wb') as dst_file:
         dst_file.write(r.content)
 
@@ -37,6 +41,7 @@ def download_file_from_google_drive(id, destination):
         params = { 'id' : id, 'confirm' : token }
         response = session.get(URL, params = params, stream = True)
 
+    create_dirs_for_path(destination)
     save_response_content(response, destination)
 
 
