@@ -62,22 +62,21 @@ def preprocess_input(X, expand_range=True):
     return X
 
 
-def save(X, Y):
-    if not os.path.isdir(constants.PREPROCESSED_DATA_DIR):
-        os.mkdir(constants.PREPROCESSED_DATA_DIR)
+def save(X, Y, file_name):
+    os.makedirs(constants.DATASETS_DIR, exist_ok=True)
 
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=7)
-    
-    np.save(constants.TRAIN_X, X_train)
-    np.save(constants.TRAIN_Y, Y_train)
-    np.save(constants.TEST_X, X_test)
-    np.save(constants.TEST_Y, Y_test)
+    x_path = os.path.join(constants.DATASETS_DIR, file_name + '_x.npy')
+    np.save(x_path, X)
 
-    print(f'{len(X_train)} train images, {len(X_test)} test images')
+    y_path = os.path.join(constants.DATASETS_DIR, file_name + '_y.npy')
+    np.save(y_path, Y)
+
+    print(f'Generated {len(X)} items')
+    print(f'Data saved in {x_path} and {y_path}')
 
 
 def main(args):
     unpack(FER_ARCHIVE_PATH)
     X, Y = generate_data()
     X = preprocess_input(X)
-    save(X, Y)
+    save(X, Y, 'data')

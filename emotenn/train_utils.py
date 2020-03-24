@@ -6,8 +6,7 @@ from sklearn.model_selection import train_test_split
 
 
 def get_callbacks(model_name):
-    if not os.path.isdir(constants.CHECKPOINTS_DIR):
-        os.mkdir(constants.CHECKPOINTS_DIR)
+    os.makedirs(constants.CHECKPOINTS_DIR, exist_ok=True)
 
     cb_list = []
     cb_list.append(callbacks.ModelCheckpoint(os.path.join(constants.CHECKPOINTS_DIR, model_name + '-{epoch:02d}-{val_loss:.2f}.h5'), period=5))
@@ -22,8 +21,7 @@ def split_dataset(data_x, data_y, valid_size, test_size):
 
 
 def save_results(model, history, model_name):
-    if not os.path.isdir(constants.TRAINED_MODELS_DIR):
-        os.mkdir(constants.TRAINED_MODELS_DIR)
+    os.makedirs(constants.TRAINED_MODELS_DIR, exist_ok=True)
 
     model_file_path = os.path.join(constants.TRAINED_MODELS_DIR, model_name) + '.h5'
     model.save(model_file_path)

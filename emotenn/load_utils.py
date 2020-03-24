@@ -46,12 +46,12 @@ def download_file_from_google_drive(id, destination):
 
 
 def load_dataset(dataset):
-    x_path = os.path.join(constants.PREPROCESSED_DATA_DIR, dataset.x_name)
+    x_path = os.path.join(constants.DATASETS_DIR, dataset.x.name)
     if not os.path.exists(x_path):
-        download_file_from_google_drive(dataset.x_gdrive_id, x_path)
-    y_path = os.path.join(constants.PREPROCESSED_DATA_DIR, dataset.y_name)
+        download_file_from_google_drive(dataset.x.id, x_path)
+    y_path = os.path.join(constants.DATASETS_DIR, dataset.y.name)
     if not os.path.exists(y_path):
-        download_file_from_google_drive(dataset.y_gdrive_id, y_path)
+        download_file_from_google_drive(dataset.y.id, y_path)
     X = np.load(x_path)
     Y = np.load(y_path)
     return X, Y

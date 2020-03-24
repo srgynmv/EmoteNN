@@ -1,7 +1,8 @@
 .vscode
 __pycache__
-data
+results
 datasets/unpacked
+datasets/*.npy
 *.pyc
 *.venv
 .ipynb_checkpoints

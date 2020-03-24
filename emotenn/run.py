@@ -10,7 +10,7 @@ from tensorflow.keras.models import load_model
 from .generate_data import preprocess_input
 
 
-HAARCASCADE_PATH = os.path.join(constants.PREPROCESSED_DATA_DIR, 'haarcascade_frontalface_default.xml')
+HAARCASCADE_PATH = os.path.join(constants.RESULTS_DIR, 'haarcascade_frontalface_default.xml')
 HAARCASCADE_URL = 'https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml'
 
 
