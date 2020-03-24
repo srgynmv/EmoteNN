@@ -4,3 +4,4 @@ data
 datasets/unpacked
 *.pyc
 *.venv
+.ipynb_checkpoints

@@ -3,7 +3,7 @@ import cv2
 import sys
 import argparse
 import requests
-from . import constants
+from . import constants, load_utils
 
 import numpy as np
 from tensorflow.keras.models import load_model
@@ -14,15 +14,6 @@ HAARCASCADE_PATH = os.path.join(constants.PREPROCESSED_DATA_DIR, 'haarcascade_fr
 HAARCASCADE_URL = 'https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml'
 
 
-def download(src_url, dst_path):
-    r = requests.get(src_url)
-    directory = os.path.dirname(dst_path)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    with open(dst_path, 'wb') as dst_file:
-        dst_file.write(r.content)
-
-
 class EmoteClassifier:
     def __init__(self, model_path=None):
         # Load keras model
@@ -31,7 +22,7 @@ class EmoteClassifier:
 
         # Download cascades
         if not os.path.exists(HAARCASCADE_PATH):
-            download(HAARCASCADE_URL, HAARCASCADE_PATH)
+            load_utils.download(HAARCASCADE_URL, HAARCASCADE_PATH)
         self.face_cascade = cv2.CascadeClassifier(HAARCASCADE_PATH)
 
     def classify(self, face):
