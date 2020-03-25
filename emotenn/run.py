@@ -15,10 +15,12 @@ HAARCASCADE_URL = 'https://raw.githubusercontent.com/opencv/opencv/master/data/h
 
 
 class EmoteClassifier:
-    def __init__(self, model_path=None):
+    def __init__(self, model_name=None):
         # Load keras model
-        model_source = model_path or os.path.join(constants.TRAINED_MODELS_DIR, 'model.h5')
-        self.model = load_model(model_source)
+        model_name = model_name or 'model'
+        model_file = getattr(constants, model_name.upper())
+        load_utils.download_file_from_google_drive(model_file, exist_ok=True)
+        self.model = load_model(model_file.path)
         _, self.input_width, self.input_height, _ = self.model.input.shape.as_list()
 
         # Download cascades
@@ -149,11 +151,11 @@ class WindowOutput:
 
 def fill_arguments(parser):
     parser.add_argument('source', nargs='?', default=None, help='path to a source for the emotion recognition')
-    parser.add_argument('--model', default=None, help='path to a trained model')
+    parser.add_argument('--model', default=None, help='name of a trained model')
     parser.add_argument('--probs', action='store_true', help='display probabilities of all classes instead of one class')
 
 
 def main(args):
-    classifier = EmoteClassifier(model_path=args.model)
+    classifier = EmoteClassifier(model_name=args.model)
     with WindowOutput(draw_probabilites=args.probs) as output:
         classifier.process_source(args.source, output.on_frame)
