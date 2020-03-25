@@ -13,10 +13,12 @@ CHECKPOINTS_DIR = os.path.join(RESULTS_DIR, 'checkpoints')
 CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 # urls
-GDriveFile = namedtuple('GDriveFile', ['id', 'name'])
+GDriveFile = namedtuple('GDriveFile', ['id', 'path'])
 Dataset = namedtuple('Dataset', ['x', 'y'])
 
 FER2013 = Dataset(
-    x=GDriveFile(id='1ixw7odMh7jTOHgTQBRISd_WUdsvOU0P2', name='fer2013_x.npy'),
-    y=GDriveFile(id='1VjpSF_fzjWQ78yiiNwbzVYuhLrM3S9rQ', name='fer2013_y.npy')
+    x=GDriveFile('1ixw7odMh7jTOHgTQBRISd_WUdsvOU0P2', 
+                 os.path.join(DATASETS_DIR, 'fer2013_x.npy')),
+    y=GDriveFile('1VjpSF_fzjWQ78yiiNwbzVYuhLrM3S9rQ', 
+                 os.path.join(DATASETS_DIR, 'fer2013_y.npy'))
 )
