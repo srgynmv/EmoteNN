@@ -10,10 +10,6 @@ MODELS_DIR = os.path.join(PROJECT_ROOT_DIR, 'models')
 TRAINED_MODELS_DIR = os.path.join(PROJECT_ROOT_DIR, 'trained_models')
 CHECKPOINTS_DIR = os.path.join(RESULTS_DIR, 'checkpoints')
 
-# data section
-WIDTH = 48
-HEIGHT = 48
-SIZE = (WIDTH, HEIGHT)
 CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 # urls

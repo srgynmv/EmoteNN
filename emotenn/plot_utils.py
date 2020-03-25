@@ -38,10 +38,11 @@ def plot_model_history(history_path):
 
 
 def plot_random_images(X, Y, count=5):
+    img_count, width, height, _ = X.shape
     fig, axes = plt.subplots(1, count)
     for ax in axes:
         image_idx = np.random.randint(0, len(X))
-        ax.imshow(X[image_idx].reshape((constants.WIDTH, constants.HEIGHT)), interpolation='none', cmap='gray')
+        ax.imshow(X[image_idx].reshape((width, height)), interpolation='none', cmap='gray')
         ax.set_title(get_class_name(Y[image_idx]))
         ax.axis('off')
     plt.show()
