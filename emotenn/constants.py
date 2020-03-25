@@ -16,6 +16,7 @@ CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral'
 GDriveFile = namedtuple('GDriveFile', ['id', 'path'])
 Dataset = namedtuple('Dataset', ['x', 'y'])
 
+FER_ARCHIVE = GDriveFile('1Syp3_xi0rV_DlWYQP4KVYmfH9f4djtzT', os.path.join(DATASETS_DIR, 'fer2013.zip'))
 FER2013 = Dataset(
     x=GDriveFile('1ixw7odMh7jTOHgTQBRISd_WUdsvOU0P2', os.path.join(DATASETS_DIR, 'fer2013_x.npy')),
     y=GDriveFile('1VjpSF_fzjWQ78yiiNwbzVYuhLrM3S9rQ', os.path.join(DATASETS_DIR, 'fer2013_y.npy'))

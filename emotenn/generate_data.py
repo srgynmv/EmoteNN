@@ -6,8 +6,6 @@ from . import constants, load_utils as lu
 from sklearn.model_selection import train_test_split
 
 
-FER_ARCHIVE = constants.GDriveFile('1Syp3_xi0rV_DlWYQP4KVYmfH9f4djtzT', 
-                                   os.path.join(constants.DATASETS_DIR, 'fer2013.zip'))
 FER_CSV_PATH = os.path.join(constants.UNPACKED_DIR, 'fer2013', 'fer2013.csv')
 FER_WIDTH = 48
 FER_HEIGHT = 48
@@ -77,8 +75,8 @@ def save(X, Y, file_name):
 
 
 def main(args):
-    lu.download_file_from_google_drive(FER_ARCHIVE, exist_ok=True)
-    unpack(FER_ARCHIVE.path)
+    lu.download_file_from_google_drive(constants.FER_ARCHIVE, exist_ok=True)
+    unpack(constants.FER_ARCHIVE.path)
     X, Y = generate_data()
     X = preprocess_input(X)
     save(X, Y, 'data')
