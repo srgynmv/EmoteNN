@@ -35,7 +35,7 @@ def generate_data():
     X = np.asarray(X)
     X = np.expand_dims(X, -1)
 
-    Y = pd.get_dummies(data['emotion']).to_numpy()
+    Y = pd.get_dummies(data['emotion']).to_numpy().astype('float32')
 
     print(f'Loaded {len(X)} images')
     print(f'Image shape: {X[0].shape}')
