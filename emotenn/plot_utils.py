@@ -37,7 +37,7 @@ def plot_model_history(history_path):
     plt.show()
 
 
-def plot_random_images(X, Y, count=10):
+def plot_random_images(X, Y, count=5):
     fig, axes = plt.subplots(1, count)
     for ax in axes:
         image_idx = np.random.randint(0, len(X))
