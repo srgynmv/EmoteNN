@@ -37,18 +37,19 @@ def plot_model_history(history_path):
     plt.show()
 
 
-def plot_random_images(X, Y, count=10):
+def plot_random_images(X, Y, count=5):
+    img_count, width, height, _ = X.shape
     fig, axes = plt.subplots(1, count)
     for ax in axes:
         image_idx = np.random.randint(0, len(X))
-        ax.imshow(X[image_idx].reshape((constants.WIDTH, constants.HEIGHT)), interpolation='none', cmap='gray')
+        ax.imshow(X[image_idx].reshape((width, height)), interpolation='none', cmap='gray')
         ax.set_title(get_class_name(Y[image_idx]))
         ax.axis('off')
     plt.show()
 
 
 def draw_data_metrics(data_x, data_y):
-    print('Data dimensions: {}'.format(data_x.shape)
+    print('Data dimensions: {}'.format(data_x.shape))
 
     data_y = [np.where(vec == 1)[0][0] for vec in data_y] # convert from 1-hot vec to class index
     classes, counts = np.unique(data_y, return_counts=True)

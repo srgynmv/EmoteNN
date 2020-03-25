@@ -10,7 +10,7 @@ from tensorflow.keras.models import load_model
 from .generate_data import preprocess_input
 
 
-HAARCASCADE_PATH = os.path.join(constants.PREPROCESSED_DATA_DIR, 'haarcascade_frontalface_default.xml')
+HAARCASCADE_PATH = os.path.join(constants.RESULTS_DIR, 'haarcascade_frontalface_default.xml')
 HAARCASCADE_URL = 'https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml'
 
 
@@ -19,6 +19,7 @@ class EmoteClassifier:
         # Load keras model
         model_source = model_path or os.path.join(constants.TRAINED_MODELS_DIR, 'model.h5')
         self.model = load_model(model_source)
+        _, self.input_width, self.input_height, _ = self.model.input.shape.as_list()
 
         # Download cascades
         if not os.path.exists(HAARCASCADE_PATH):
@@ -27,8 +28,8 @@ class EmoteClassifier:
 
     def classify(self, face):
         # Preprocess
-        face = cv2.resize(face, constants.SIZE)
-        face = np.reshape(face, (1, constants.WIDTH, constants.HEIGHT, 1))
+        face = cv2.resize(face, (self.input_width, self.input_height))
+        face = np.reshape(face, (1, self.input_width, self.input_height, 1))
         face = preprocess_input(face)
 
         # Infer
