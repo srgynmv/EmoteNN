@@ -48,7 +48,7 @@ def plot_random_images(X, Y, count=10):
 
 
 def draw_data_metrics(data_x, data_y):
-    print('Data dimensions: {}'.format(data_x.shape)
+    print('Data dimensions: {}'.format(data_x.shape))
 
     data_y = [np.where(vec == 1)[0][0] for vec in data_y] # convert from 1-hot vec to class index
     classes, counts = np.unique(data_y, return_counts=True)
