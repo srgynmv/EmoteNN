@@ -1,5 +1,6 @@
 import os
 import pickle
+import tensorflow as tf
 from . import constants
 from tensorflow.keras import callbacks
 from sklearn.model_selection import train_test_split
@@ -14,8 +15,12 @@ def get_callbacks(model_name):
     return cb_list
 
 
-def split_dataset(data_x, data_y, valid_size, test_size):
-    x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=(test_size + valid_size))
+def split_dataset(data_x, data_y, valid_size, test_size, align_by=None):
+    train_size = 1.0 - valid_size - test_size
+    if align_by is not None:
+        train_size = int(train_size * len(data_x))
+        train_size -= train_size % align_by
+    x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, train_size=train_size)
     x_valid, x_test, y_valid, y_test = train_test_split(x_test, y_test, test_size=test_size / (test_size + valid_size)) 
     return x_train, x_valid, x_test, y_train, y_valid, y_test
 
@@ -31,3 +36,14 @@ def save_results(model, history, model_name):
     with open(history_path, 'wb') as history_file:
         pickle.dump(history.history, history_file)
     print('Train history is saved to {}'.format(history_path))
+
+
+def get_distribution_strategy():
+    try:
+        resolver = tf.distribute.cluster_resolver.TPUClusterResolver()
+        tf.config.experimental_connect_to_cluster(resolver)
+        tf.tpu.experimental.initialize_tpu_system(resolver)
+        strategy = tf.distribute.experimental.TPUStrategy(resolver)
+    except ValueError:
+        strategy = tf.distribute.MirroredStrategy()
+    return strategy
