@@ -17,8 +17,8 @@ def download(src_url, dst_path):
         dst_file.write(r.content)
 
 
-# Thanks https://stackoverflow.com/questions/25010369/wget-curl-large-file-from-google-drive/39225039#39225039
-def download_file_from_google_drive(id, destination):
+def download_file_from_google_drive(gdrive_file, exist_ok=False):
+    # Thanks https://stackoverflow.com/questions/25010369/wget-curl-large-file-from-google-drive/39225039#39225039
     def get_confirm_token(response):
         for key, value in response.cookies.items():
             if key.startswith('download_warning'):
@@ -32,6 +32,11 @@ def download_file_from_google_drive(id, destination):
                 if chunk:
                     f.write(chunk)
 
+    destination = gdrive_file.path
+    if exist_ok and os.path.exists(destination):
+        return
+
+    id = gdrive_file.id
     URL = "https://docs.google.com/uc?export=download"
     session = requests.Session()
     response = session.get(URL, params = { 'id' : id }, stream = True)
@@ -46,12 +51,8 @@ def download_file_from_google_drive(id, destination):
 
 
 def load_dataset(dataset):
-    x_path = os.path.join(constants.DATASETS_DIR, dataset.x.name)
-    if not os.path.exists(x_path):
-        download_file_from_google_drive(dataset.x.id, x_path)
-    y_path = os.path.join(constants.DATASETS_DIR, dataset.y.name)
-    if not os.path.exists(y_path):
-        download_file_from_google_drive(dataset.y.id, y_path)
-    X = np.load(x_path)
-    Y = np.load(y_path)
+    download_file_from_google_drive(dataset.x, exist_ok=True)
+    download_file_from_google_drive(dataset.y, exist_ok=True)
+    X = np.load(dataset.x.path)
+    Y = np.load(dataset.y.path)
     return X, Y
