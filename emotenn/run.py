@@ -7,7 +7,7 @@ from . import constants, load_utils
 
 import numpy as np
 from tensorflow.keras.models import load_model
-from .generate_data import preprocess_input
+from .gen_utils import preprocess_input
 
 
 HAARCASCADE_PATH = os.path.join(constants.RESULTS_DIR, 'haarcascade_frontalface_default.xml')

@@ -1,14 +1,7 @@
 import os
 import zipfile
 import numpy as np
-import pandas as pd
-from . import constants, load_utils as lu
-from sklearn.model_selection import train_test_split
-
-
-FER_CSV_PATH = os.path.join(constants.UNPACKED_DIR, 'fer2013', 'fer2013.csv')
-FER_WIDTH = 48
-FER_HEIGHT = 48
+from . import constants
 
 
 def unpack(archive_path):
@@ -20,27 +13,6 @@ def unpack(archive_path):
 
     with zipfile.ZipFile(archive_path, 'r') as archive:
         archive.extractall(unpack_path)
-
-
-def generate_data():
-    data = pd.read_csv(FER_CSV_PATH)
-    pixels = data['pixels'].tolist()
-
-    X = []
-    for image in pixels:
-        image = [int(pixel) for pixel in image.split(' ')]
-        image = np.asarray(image).reshape(FER_WIDTH, FER_HEIGHT)
-        X.append(image.astype('float32'))
-
-    X = np.asarray(X)
-    X = np.expand_dims(X, -1)
-
-    Y = pd.get_dummies(data['emotion']).to_numpy().astype('float32')
-
-    print(f'Loaded {len(X)} images')
-    print(f'Image shape: {X[0].shape}')
-
-    return X, Y
 
 
 def preprocess_input(X, expand_range=True):
@@ -72,11 +44,3 @@ def save(X, Y, file_name):
 
     print(f'Generated {len(X)} items')
     print(f'Data saved in {x_path} and {y_path}')
-
-
-def main(args):
-    lu.download_file_from_google_drive(constants.FER_ARCHIVE, exist_ok=True)
-    unpack(constants.FER_ARCHIVE.path)
-    X, Y = generate_data()
-    X = preprocess_input(X)
-    save(X, Y, 'data')
