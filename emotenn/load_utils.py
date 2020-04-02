@@ -51,8 +51,8 @@ def download_file_from_google_drive(gdrive_file, exist_ok=False):
 
 
 def load_dataset(dataset):
-    download_file_from_google_drive(dataset.x, exist_ok=True)
-    download_file_from_google_drive(dataset.y, exist_ok=True)
-    X = np.load(dataset.x.path)
-    Y = np.load(dataset.y.path)
+    download_file_from_google_drive(dataset, exist_ok=True)
+    with open(dataset.path, 'rb') as dataset_file:
+        X = np.load(dataset_file)
+        Y = np.load(dataset_file)
     return X, Y

@@ -14,13 +14,9 @@ CLASS_NAMES = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral'
 
 # urls
 GDriveFile = namedtuple('GDriveFile', ['id', 'path'])
-Dataset = namedtuple('Dataset', ['x', 'y'])
 
 FER_ARCHIVE = GDriveFile('1Syp3_xi0rV_DlWYQP4KVYmfH9f4djtzT', os.path.join(DATASETS_DIR, 'fer2013.zip'))
-FER2013 = Dataset(
-    x=GDriveFile('1ixw7odMh7jTOHgTQBRISd_WUdsvOU0P2', os.path.join(DATASETS_DIR, 'fer2013_x.npy')),
-    y=GDriveFile('1VjpSF_fzjWQ78yiiNwbzVYuhLrM3S9rQ', os.path.join(DATASETS_DIR, 'fer2013_y.npy'))
-)
+FER2013 = GDriveFile('1MdNY-bRxCg0oWnOec69rSRKTU_iUbEHv', os.path.join(DATASETS_DIR, 'fer2013.bin'))
 
 LU_CNN = GDriveFile('1RHaMKknF6ues_QPqxpQsXCrFRNScBbOA', os.path.join(TRAINED_MODELS_DIR, 'lu_cnn.h5'))
 LU_CNN_HISTORY = GDriveFile('1M4up-LLmMMRaq7XDlrD8CpermiOZrWg8', os.path.join(TRAINED_MODELS_DIR, 'lu_cnn_history.pkl'))

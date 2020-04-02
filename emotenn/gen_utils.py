@@ -36,11 +36,10 @@ def preprocess_input(X, expand_range=True):
 def save(X, Y, file_name):
     os.makedirs(constants.DATASETS_DIR, exist_ok=True)
 
-    x_path = os.path.join(constants.DATASETS_DIR, file_name + '_x.npy')
-    np.save(x_path, X)
-
-    y_path = os.path.join(constants.DATASETS_DIR, file_name + '_y.npy')
-    np.save(y_path, Y)
+    file_path = os.path.join(constants.DATASETS_DIR, file_name + '.bin')
+    with open(file_path, 'wb') as np_file:
+        np.save(np_file, X)
+        np.save(np_file, Y)
 
     print(f'Generated {len(X)} items')
-    print(f'Data saved in {x_path} and {y_path}')
+    print(f'Data saved in {file_path}')
