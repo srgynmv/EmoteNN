@@ -14,9 +14,10 @@ def get_class_name(y):
     return names[y == 1][0]
 
 
-def plot_model_history(history_path):
-    with open(history_path, 'rb') as f:
-        history = pickle.load(f)
+def plot_model_history(history):
+    if type(history) == 'str':
+        with open(history_path, 'rb') as f:
+            history = pickle.load(f)
 
     # Plot training & validation accurnacy values
     plt.plot(history['accuracy'])
