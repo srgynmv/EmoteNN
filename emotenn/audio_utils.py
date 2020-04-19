@@ -31,24 +31,24 @@ var record = time => new Promise(async resolve => {
 
 
 def record_audio_raw(sec=3):
-  print("Start recording...")
-  display(Javascript(RECORD))
-  s = output.eval_js('record(%d)' % (sec*1000))
-  b = b64decode(s.split(',')[1])
-  print("Stop recording...")
-  return b
+    print("Start recording...")
+    display(Javascript(RECORD))
+    s = output.eval_js('record(%d)' % (sec*1000))
+    b = b64decode(s.split(',')[1])
+    print("Stop recording...")
+    return b
 
 
 def record_audio_in_file(file_name, sec=3):
-  data = record(sec)
-  with open(file_name,'wb') as f:
-    f.write(data)
-  print("Created {} audio file".format(file_name))
-  return data
+    data = record_audio_raw(sec=sec)
+    with open(file_name,'wb') as f:
+        f.write(data)
+    print("Created {} audio file".format(file_name))
+    return data
 
 
 def record_audio(sec=3):
-    raw_data = record(sec=sec)
+    raw_data = record_audio_raw(sec=sec)
     return Audio(raw_data, rate=FRAMERATE, autoplay=False)
 
 
