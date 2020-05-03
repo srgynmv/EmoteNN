@@ -18,9 +18,11 @@ class EmoteClassifier:
     def __init__(self, model_name=None):
         # Load keras model
         model_name = model_name or 'model'
-        model_file = getattr(constants, model_name.upper())
-        load_utils.download_file_from_google_drive(model_file, exist_ok=True)
-        self.model = load_model(model_file.path)
+        #model_file = getattr(constants, model_name.upper())
+        #load_utils.download_file_from_google_drive(model_file, exist_ok=True)
+        #self.model = load_model(model_file.path)
+        model_file = 'trained_models/resnet-big-dataset-04-0.60.h5'
+        self.model = load_model(model_file)
         _, self.input_width, self.input_height, _ = self.model.input.shape.as_list()
 
         # Download cascades
@@ -31,8 +33,9 @@ class EmoteClassifier:
     def classify(self, face):
         # Preprocess
         face = cv2.resize(face, (self.input_width, self.input_height))
-        face = np.reshape(face, (1, self.input_width, self.input_height, 1))
-        face = preprocess_input(face)
+        face = face.astype(np.float32)
+        face = np.expand_dims(face, 0)
+        #face = preprocess_input(face)
 
         # Infer
         classes = self.model.predict(face)
@@ -51,12 +54,13 @@ class EmoteClassifier:
             timestamp = capture.get(cv2.CAP_PROP_POS_MSEC)
 
             # Find faces using the cascade
-            gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            faces = self.face_cascade.detectMultiScale(gray_img, 1.1, 5)
+            #gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            #faces = self.face_cascade.detectMultiScale(gray_img, 1.1, 5)
+            faces = self.face_cascade.detectMultiScale(img, 1.1, 5)
 
             emotion_classes = []
             for x, y, w, h in faces:
-                face = gray_img[y:y+h, x:x+w]
+                face = img[y:y+h, x:x+w]
                 emotion_classes.append(self.classify(face))
 
             processed_faces = zip(faces, emotion_classes)
