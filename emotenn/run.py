@@ -7,7 +7,7 @@ from . import constants, load_utils
 
 import numpy as np
 from tensorflow.keras.models import load_model
-from .gen_utils import preprocess_input
+from .gen_utils import preprocess_input as preprocess_image
 
 
 HAARCASCADE_PATH = os.path.join(constants.RESULTS_DIR, 'haarcascade_frontalface_default.xml')
@@ -15,15 +15,15 @@ HAARCASCADE_URL = 'https://raw.githubusercontent.com/opencv/opencv/master/data/h
 
 
 class EmoteClassifier:
-    def __init__(self, model_name=None):
+    def __init__(self, model_file=None, preprocess_input=True):
         # Load keras model
-        model_name = model_name or 'model'
-        #model_file = getattr(constants, model_name.upper())
-        #load_utils.download_file_from_google_drive(model_file, exist_ok=True)
-        #self.model = load_model(model_file.path)
-        model_file = 'trained_models/resnet-big-dataset-04-0.60.h5'
+        if model_file is None:
+            load_utils.download_file_from_google_drive(constants.MODEL, exist_ok=True)
+            model_file = constants.MODEL.path
         self.model = load_model(model_file)
-        _, self.input_width, self.input_height, _ = self.model.input.shape.as_list()
+        _, self.input_width, self.input_height, self.channels = self.model.input.shape.as_list()
+        self.is_gray = self.channels == 1
+        self.preprocess_input = preprocess_input
 
         # Download cascades
         if not os.path.exists(HAARCASCADE_PATH):
@@ -35,7 +35,8 @@ class EmoteClassifier:
         face = cv2.resize(face, (self.input_width, self.input_height))
         face = face.astype(np.float32)
         face = np.expand_dims(face, 0)
-        #face = preprocess_input(face)
+        if self.preprocess_input:
+            face = preprocess_image(face)
 
         # Infer
         classes = self.model.predict(face)
@@ -54,9 +55,8 @@ class EmoteClassifier:
             timestamp = capture.get(cv2.CAP_PROP_POS_MSEC)
 
             # Find faces using the cascade
-            #gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            #faces = self.face_cascade.detectMultiScale(gray_img, 1.1, 5)
-            faces = self.face_cascade.detectMultiScale(img, 1.1, 5)
+            face_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if self.is_gray else img
+            faces = self.face_cascade.detectMultiScale(face_img, 1.1, 5)
 
             emotion_classes = []
             for x, y, w, h in faces:
@@ -155,11 +155,12 @@ class WindowOutput:
 
 def fill_arguments(parser):
     parser.add_argument('source', nargs='?', default=None, help='path to a source for the emotion recognition')
-    parser.add_argument('--model', default=None, help='name of a trained model')
+    parser.add_argument('--model', default=None, help='path to a trained model')
+    parser.add_argument('--preprocess_input', default=False, help='scale input image to the 0-1 range')
     parser.add_argument('--probs', action='store_true', help='display probabilities of all classes instead of one class')
 
 
 def main(args):
-    classifier = EmoteClassifier(model_name=args.model)
+    classifier = EmoteClassifier(model_name=args.model, preprocess_input=args.preprocess_input)
     with WindowOutput(draw_probabilites=args.probs) as output:
         classifier.process_source(args.source, output.on_frame)
